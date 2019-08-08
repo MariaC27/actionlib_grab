@@ -45,9 +45,11 @@ class GrabAction(object):
 
 		if success:
 
-			#COMMENTED out when robot is not present 
-			#rob = urx.Robot("172.22.22.2")
-			#robotiqgrip = Robotiq_Two_Finger_Gripper(rob, 1.25)
+			#make sure to comment out all robot commands when robot 
+			#is not present in order to avoid timeout errors 
+
+			rob = urx.Robot("172.22.22.2")
+			robotiqgrip = Robotiq_Two_Finger_Gripper(rob, 1.25)
 
 
 
@@ -57,10 +59,9 @@ class GrabAction(object):
 			v = 0.1
 			
 
-			#COMMENTED out when robot is not present
-			#pose = rob.getl()
-			#rospy.loginfo("Current pose: %s"% (rob.getl()))
-			#rob.movep(pose, acc=a, vel=v, wait=True)
+			pose = rob.getl()
+			rospy.loginfo("Current pose: %s"% (rob.getl()))
+			rob.movep(pose, acc=a, vel=v, wait=True)
 
 
 			rospy.loginfo('Print request of %s'%(goal.action))
@@ -76,7 +77,7 @@ class GrabAction(object):
 
 
 
-			#conditional statements - robot commands COMMENTED out when robot is not present 
+			#conditional statements 
 
 			if(goal.action == compStr1):
 				check = True  #returns true if grabbed the object
@@ -84,10 +85,10 @@ class GrabAction(object):
 
 				#commands: move to a certain point and then close gripper, grabbing object  
 
-				#rob.movel((pose[0], pose[1], pose[2] + 0.1, pose[3], pose[4], pose[5]), a, v, relative=True)
+				rob.movel((pose[0], pose[1], pose[2] + 0.1, pose[3], pose[4], pose[5]), a, v, relative=True)
 				#this move command can later be customized based on CAMERA/VISION PROCESSING data  
 
-				#robotiqgrip.close_gripper()
+				robotiqgrip.close_gripper()
 
 				rospy.loginfo("grab")
 
@@ -99,17 +100,16 @@ class GrabAction(object):
 
 				#commands: move to a certain point and then open gripper, releasing object
 
-				#rob.movel((pose[0], pose[1], pose[2] - 0.1, pose[3], pose[4], pose[5]), a, v, relative=True)
+				rob.movel((pose[0], pose[1], pose[2] - 0.1, pose[3], pose[4], pose[5]), a, v, relative=True)
 				#move command can later be customized based on CAMERA/VISION PROCESSING data  
 
-				#robotiqgrip.open_gripper()
+				robotiqgrip.open_gripper()
 
 				rospy.loginfo("release")
 
 
-			#COMMENTED out when robot is not present 
-			#rob.close()
-			#sys.exit()
+			rob.close()
+			sys.exit()
 
 
 			self._result.outcome = check
